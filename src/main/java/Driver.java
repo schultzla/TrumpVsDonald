@@ -28,7 +28,7 @@ public class Driver {
 
         UserAgent myUserAgent = UserAgent.of("desktop", "me.logamos.donbot", "v0.1", "TrumpVsDonald");
         RedditClient redditClient = new RedditClient(myUserAgent);
-        Credentials credentials = Credentials.script("TrumpVsDonald", "****", "YyUpR65F_VRuVw", "rOCSuLEk6IDshax8ECxK5habR2g");
+        Credentials credentials = Credentials.script("TrumpVsDonald", "*****", "YyUpR65F_VRuVw", "*****");
         OAuthData authData = null;
         try {
             authData = redditClient.getOAuthHelper().easyAuth(credentials);
@@ -37,13 +37,14 @@ public class Driver {
         }
         redditClient.authenticate(authData);
 
-        SubredditPaginator sp = new SubredditPaginator(redditClient);
-        sp.setLimit(100);
-        sp.setSorting(Sorting.NEW);
-        sp.setTimePeriod(TimePeriod.WEEK);
-        sp.setSubreddit("TrumpCriticizesTrump");
-        sp.next(true);
-        Listing<Submission> list = sp.getCurrentListing();
+        SubredditPaginator pages = new SubredditPaginator(redditClient);
+        pages.setLimit(20);
+        pages.setSorting(Sorting.NEW);
+        pages.setTimePeriod(TimePeriod.WEEK);
+        pages.setSubreddit("TrumpCriticizesTrump");
+        pages.next(true);
+        Listing<Submission> list = pages.getCurrentListing();
+
 
 
         ArrayList<Long> tweetId = new ArrayList<Long>();
@@ -51,7 +52,6 @@ public class Driver {
             String temp = submission.getUrl();
             CharSequence charSequence = "twitter";
             if(temp.contains(charSequence)) {
-                System.out.println(temp);
                 temp = temp.replaceAll("\\D+", "");
                 try {
                     temp = temp.substring(0, 18);
@@ -61,14 +61,34 @@ public class Driver {
             } else {
                 continue;
             }
-            System.out.println(temp);
             Long id = Long.valueOf(temp);
+            Status status = null;
             try {
-                twitter.retweetStatus(id);
+                status = twitter.showStatus(id);
             } catch (TwitterException e) {
-                //e.printStackTrace();
+                e.printStackTrace();
+            }
+            try {
+                if(!status.isRetweetedByMe()) {
+                    twitter.retweetStatus(id);
+                    System.out.println("Retweeted: " + status.getText());
+                } else {
+                    System.out.println("Duplicate Tweet");
+                    break;
+                }
+            } catch (TwitterException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    public static boolean parseFile(String fileName,String searchStr) throws FileNotFoundException{
+        Scanner scan = new Scanner(new File(fileName));
+        while(scan.hasNext()){
+            String line = scan.nextLine().toLowerCase().toString();
+            return line.contains(searchStr);
+        }
+        return false;
     }
 
 }
