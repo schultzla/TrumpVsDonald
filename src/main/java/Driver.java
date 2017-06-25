@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by Logan on 6/25/2017.
+ * Created by Logan on 6/25/2017 .
  */
 public class Driver {
 
