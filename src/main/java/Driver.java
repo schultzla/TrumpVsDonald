@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by Logan on 6/25/2017 .
+ * Created by Logan on 6/25/2017
  */
 public class Driver {
 
@@ -28,7 +28,7 @@ public class Driver {
 
         UserAgent myUserAgent = UserAgent.of("desktop", "me.logamos.donbot", "v0.1", "TrumpVsDonald");
         RedditClient redditClient = new RedditClient(myUserAgent);
-        Credentials credentials = Credentials.script("TrumpVsDonald", "*****", "YyUpR65F_VRuVw", "*****");
+        //no credentials for you
         OAuthData authData = null;
         try {
             authData = redditClient.getOAuthHelper().easyAuth(credentials);

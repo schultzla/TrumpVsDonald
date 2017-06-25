@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TrumpVsDonaldBot:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TrumpVsDonaldBot_jar</output-path>
+    <root id="archive" name="TrumpVsDonaldBot.jar">
+      <element id="module-output" name="TrumpVsDonaldBot" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.6.0/jackson-core-2.6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/squareup/okio/okio/1.6.0/okio-1.6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/guava/guava/19.0/guava-19.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/net/dean/jraw/JRAW/0.9.0/JRAW-0.9.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/squareup/okhttp3/okhttp-urlconnection/3.1.2/okhttp-urlconnection-3.1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/slf4j-simple-1.6.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.6.0/jackson-databind-2.6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/squareup/okhttp3/okhttp/3.1.2/okhttp-3.1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Desktop/Twitter/lib/twitter4j-core-4.0.4.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
