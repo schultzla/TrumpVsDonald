@@ -28,7 +28,7 @@ public class Driver {
 
         UserAgent myUserAgent = UserAgent.of("desktop", "me.logamos.donbot", "v0.1", "TrumpVsDonald");
         RedditClient redditClient = new RedditClient(myUserAgent);
-        Credentials credentials = Credentials.script("TrumpVsDonald", "****", "YyUpR65F_VRuVw", "rOCSuLEk6IDshax8ECxK5habR2g");
+        Credentials credentials = Credentials.script("TrumpVsDonald", "****", "YyUpR65F_VRuVw", "*****");
         OAuthData authData = null;
         try {
             authData = redditClient.getOAuthHelper().easyAuth(credentials);
