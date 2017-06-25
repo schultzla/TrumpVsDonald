@@ -12,6 +12,7 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.conf.ConfigurationBuilder;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -24,11 +25,15 @@ public class Driver {
 
     public static void main(String[] args) {
 
-        Twitter twitter = TwitterFactory.getSingleton();
+        ConfigurationBuilder cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+        //no credentials
+        TwitterFactory tf = new TwitterFactory(cb.build());
+        Twitter twitter = tf.getInstance();
 
         UserAgent myUserAgent = UserAgent.of("desktop", "me.logamos.donbot", "v0.1", "TrumpVsDonald");
         RedditClient redditClient = new RedditClient(myUserAgent);
-        //no credentials for you
+        //no credentials
         OAuthData authData = null;
         try {
             authData = redditClient.getOAuthHelper().easyAuth(credentials);
