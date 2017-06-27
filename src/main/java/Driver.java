@@ -1,22 +1,8 @@
-import net.dean.jraw.RedditClient;
-import net.dean.jraw.http.UserAgent;
-import net.dean.jraw.http.oauth.Credentials;
-import net.dean.jraw.http.oauth.OAuthData;
-import net.dean.jraw.http.oauth.OAuthException;
-import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
-import net.dean.jraw.paginators.Sorting;
-import net.dean.jraw.paginators.SubredditPaginator;
-import net.dean.jraw.paginators.TimePeriod;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
-import twitter4j.conf.ConfigurationBuilder;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Created by Logan on 6/25/2017
@@ -24,56 +10,41 @@ import java.util.Scanner;
 public class Driver {
 
     public static void main(String[] args) {
+        //Authorize Twitter account
+        Twitter twitter = TwitterFactory.getSingleton();
 
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-        //no credentials
-        TwitterFactory tf = new TwitterFactory(cb.build());
-        Twitter twitter = tf.getInstance();
+        //Authorize Reddit Account
+        RedditAuth.getCredentials();
 
-        UserAgent myUserAgent = UserAgent.of("desktop", "me.logamos.donbot", "v0.1", "TrumpVsDonald");
-        RedditClient redditClient = new RedditClient(myUserAgent);
-        //no credentials
-        OAuthData authData = null;
-        try {
-            authData = redditClient.getOAuthHelper().easyAuth(credentials);
-        } catch (OAuthException e) {
-            e.printStackTrace();
-        }
-        redditClient.authenticate(authData);
-
-        SubredditPaginator pages = new SubredditPaginator(redditClient);
-        pages.setLimit(20);
-        pages.setSorting(Sorting.NEW);
-        pages.setTimePeriod(TimePeriod.WEEK);
-        pages.setSubreddit("TrumpCriticizesTrump");
-        pages.next(true);
-        Listing<Submission> list = pages.getCurrentListing();
-
-
-
-        ArrayList<Long> tweetId = new ArrayList<Long>();
-        for(Submission submission : list) {
+        //Go through last 20 new submissions on /r/TrumpCriticizesTrump
+        for(Submission submission : RedditAuth.list) {
+            //Get the URL of the current submission
             String temp = submission.getUrl();
+
+            /*If the URL is a Twitter link, replace all of the letters and take the first 18 digits which would be the
+               status ID. If the status is old and shorter than 18 just skip it, same if it is not a Twitter link
+             */
             CharSequence charSequence = "twitter";
             if(temp.contains(charSequence)) {
                 temp = temp.replaceAll("\\D+", "");
                 try {
                     temp = temp.substring(0, 18);
                 } catch (StringIndexOutOfBoundsException e) {
+                    log("Bad link");
                     continue;
                 }
             } else {
                 continue;
             }
+
+            //Store the status ID as a long
             Long id = Long.valueOf(temp);
-            Status status = null;
+            Status status;
             try {
+                /*If the status was already retweeted stop the search as the bot has reached the last tweet it tweeted
+                and any subsequent tweets will have already been retweeted. Otherwise, retweet the new link and move on
+                 */
                 status = twitter.showStatus(id);
-            } catch (TwitterException e) {
-                e.printStackTrace();
-            }
-            try {
                 if(!status.isRetweetedByMe()) {
                     twitter.retweetStatus(id);
                     System.out.println("Retweeted: " + status.getText());
@@ -82,18 +53,13 @@ public class Driver {
                     break;
                 }
             } catch (TwitterException e) {
-                e.printStackTrace();
+                log("Unable to reach Twitter");
             }
         }
     }
 
-    public static boolean parseFile(String fileName,String searchStr) throws FileNotFoundException{
-        Scanner scan = new Scanner(new File(fileName));
-        while(scan.hasNext()){
-            String line = scan.nextLine().toLowerCase().toString();
-            return line.contains(searchStr);
-        }
-        return false;
+    //Shortened print method
+    private static void log(String s) {
+        System.out.println(s);
     }
-
 }
